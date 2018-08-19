@@ -12,6 +12,20 @@ RSpec.describe RubyFriendlyError do
 
     before { String.disable_colorization = true }
 
+    context 'when not exist error' do
+      let(:code) do
+        <<~CODE
+          player_life = 100
+          print 'hoge' if player_life > 0
+        CODE
+      end
+
+      it 'display message' do
+        expect { subject }.to output('hoge').to_stdout_from_any_process
+        expect { subject }.not_to output.to_stderr_from_any_process
+      end
+    end
+
     context "when exist 'missing_end'" do
       let(:code) do
         <<~CODE

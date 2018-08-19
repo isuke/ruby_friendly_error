@@ -28,7 +28,9 @@ module RubyFriendlyError
     def exec file_content
       suppress_error_display { _ast = Parser::CurrentRuby.parse file_content }
 
-      Kernel.load file_path
+      # rubocop:disable Security/Eval
+      eval file_content
+      # rubocop:enable Security/Eval
     rescue Parser::SyntaxError => ex
       case ex.message
         when 'unexpected token $end'
