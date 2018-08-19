@@ -33,6 +33,8 @@ module RubyFriendlyError
       case ex.message
         when 'unexpected token $end'
           render_missing_end_error file_content, ex
+        when 'unexpected token kEND'
+          render_unnecessary_end_error file_content, ex
       end
     end
 

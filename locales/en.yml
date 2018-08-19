@@ -4,3 +4,6 @@ en:
     missing_end: |
       missing `end`.
       Probably the cause is more before line.
+    unnecessary_end: |
+      exist unnecessary `end`.
+      Please remove unnecessary `end`.
