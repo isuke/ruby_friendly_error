@@ -21,8 +21,11 @@ RSpec.describe RubyFriendlyError do
       end
 
       it 'display message' do
-        expect { subject }.to output('hoge').to_stdout_from_any_process
-        expect { subject }.not_to output.to_stderr_from_any_process
+        expect do
+          subject
+        end.to output('hoge').to_stdout_from_any_process
+          .and not_output.to_stderr_from_any_process
+          .and not_raise_error
       end
     end
 
@@ -49,7 +52,10 @@ RSpec.describe RubyFriendlyError do
       end
 
       it 'display message' do
-        expect { subject }.to output(messages).to_stderr_from_any_process
+        expect do
+          subject
+        end.to output(messages).to_stderr_from_any_process
+          .and raise_error Parser::SyntaxError
       end
     end
 
@@ -78,7 +84,10 @@ RSpec.describe RubyFriendlyError do
       end
 
       it 'display message' do
-        expect { subject }.to output(messages).to_stderr_from_any_process
+        expect do
+          subject
+        end.to output(messages).to_stderr_from_any_process
+          .and raise_error Parser::SyntaxError
       end
     end
   end

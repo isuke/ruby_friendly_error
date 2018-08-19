@@ -38,6 +38,7 @@ module RubyFriendlyError
         when 'unexpected token kEND'
           render_unnecessary_end_error file_content, ex
       end
+      raise ex
     end
 
     def render_missing_end_error file_content, ex
