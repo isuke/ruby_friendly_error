@@ -8,6 +8,9 @@ inherit_from:
 AllCops:
   TargetRubyVersion: 2.5
   DisplayCopNames: true
+  Exclude:
+    - 'vendor/**/*'
+    - 'samples/*'
 
 Metrics/LineLength:
   Max: 160
@@ -116,3 +119,14 @@ Layout/SpaceBeforeFirstArg:
 #   password = ENV['password'] || ''
 Layout/SpaceAroundOperators:
   Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - io
+    - id
+    - to
+    - by
+    - on
+    - in
+    - at
+    - ex

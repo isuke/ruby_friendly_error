@@ -1,0 +1,6 @@
+en:
+  syntax_error:
+    title: "syntax error"
+    missing_end: |
+      missing `end`.
+      Probably the cause is more before line.
