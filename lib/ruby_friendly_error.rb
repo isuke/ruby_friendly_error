@@ -43,10 +43,17 @@ module RubyFriendlyError
       STDERR.puts format_lines(I18n.t('syntax_error.missing_end')) { |l, _i| "  #{l}" }.colorize(:light_red)
     end
 
+    def render_unnecessary_end_error file_content, ex
+      line = ex.diagnostic.location.line
+      display_error_line file_content, line
+      STDERR.puts I18n.t('syntax_error.title').colorize(:light_red) + ':'
+      STDERR.puts format_lines(I18n.t('syntax_error.unnecessary_end')) { |l, _i| "  #{l}" }.colorize(:light_red)
+    end
+
   private
 
     def suppress_error_display
-      original_stdout = $stdout
+      original_stdout = $stderr
       $stderr         = StringIO.new
 
       yield
