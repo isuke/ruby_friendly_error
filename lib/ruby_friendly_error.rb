@@ -5,6 +5,7 @@ require 'i18n'
 require 'parser/current'
 require 'pry'
 
+require 'ruby_friendly_error/ast'
 require 'ruby_friendly_error/version'
 
 Parser::Builders::Default.emit_lambda   = true
@@ -22,14 +23,16 @@ module RubyFriendlyError
 
   class << self
     def load file_path
-      exec File.read(file_path)
+      exec File.read(file_path), file_path
     end
 
-    def exec file_content
-      suppress_error_display { _ast = Parser::CurrentRuby.parse file_content }
+    def exec file_content, file_name = '(eval)'
+      ast = nil
+
+      suppress_error_display { ast = Parser::CurrentRuby.parse file_content }
 
       # rubocop:disable Security/Eval
-      eval file_content
+      eval file_content, nil, file_name
       # rubocop:enable Security/Eval
     rescue Parser::SyntaxError => ex
       case ex.message
@@ -39,7 +42,12 @@ module RubyFriendlyError
           render_unnecessary_end_error file_content, ex
       end
       raise ex
+    rescue NameError => ex
+      render_name_error_with_did_you_mean file_content, ex, ast
+      raise ex
     end
+
+  private
 
     def render_missing_end_error file_content, ex
       line = ex.diagnostic.location.line
@@ -55,7 +63,19 @@ module RubyFriendlyError
       STDERR.puts format_lines(I18n.t('syntax_error.unnecessary_end')) { |l, _i| "  #{l}" }.colorize(:light_red)
     end
 
-  private
+    def render_name_error_with_did_you_mean file_content, ex, ast
+      corrections = ex.spell_checker.corrections
+      corrections.each do |var_name|
+        node = ast.find_by_variable_name var_name
+        display_error_line file_content, node.loc.line
+      end
+
+      STDERR.puts I18n.t('name_error.title').colorize(:light_red) + ':'
+      var_name_str    = ex.spell_checker.name.underline
+      corrections_str = corrections.map { |c| "`#{c.to_s.underline}`" }.join(', ')
+      message         = I18n.t('name_error.with_did_you_mean', var_name: var_name_str, corrections: corrections_str)
+      STDERR.puts format_lines(message) { |l, _i| "  #{l}" }.colorize(:light_red)
+    end
 
     def suppress_error_display
       original_stdout = $stderr
@@ -70,11 +90,20 @@ module RubyFriendlyError
       lines        = file_content.split("\n", -1)
       line_size    = lines.size
       window_start = [error_line - window, 1].max
-      window_end   = [error_line - window + 1, line_size + 1].min
+      window_end   = [error_line + window, line_size].min
 
-      STDERR.puts format_lines(lines, window_start  , error_line - 1) { |l, i| "#{error_line - window + i}: #{l}" }&.colorize(:light_yellow)
-      STDERR.puts format_lines(lines, error_line    , error_line) { |l, i| "#{error_line + i}: #{l}" }&.colorize(:light_red)
-      STDERR.puts format_lines(lines, error_line + 1, window_end) { |l, i| "#{error_line + window + i}: #{l}" }&.colorize(:light_yellow)
+      if error_line > 1
+        start_line = window_start
+        end_line   = error_line - 1
+        STDERR.puts format_lines(lines, start_line, end_line) { |l, i| "#{start_line + i}: #{l}" }&.colorize(:light_yellow)
+      end
+      STDERR.puts "#{error_line}: #{lines[error_line - 1]}".rstrip.colorize(:light_red)
+      if error_line < line_size
+        start_line = error_line + 1
+        end_line   = window_end
+        STDERR.puts format_lines(lines, error_line + 1, end_line) { |l, i| "#{start_line + i}: #{l}" }&.colorize(:light_yellow)
+      end
+      STDERR.puts
     end
 
     def format_lines lines, start_line = 1, end_line = 0

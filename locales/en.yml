@@ -7,3 +7,8 @@ en:
     unnecessary_end: |
       exist unnecessary `end`.
       Please remove unnecessary `end`.
+  name_error:
+    title: "name error"
+    with_did_you_mean: |
+      undefined local variable or method `%{var_name}`
+      Did you mean? %{corrections}

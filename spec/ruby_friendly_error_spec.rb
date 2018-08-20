@@ -76,6 +76,7 @@ RSpec.describe RubyFriendlyError do
           5: end
           6:
           7: end # unnecessary `end`
+          8:
 
           syntax error:
             exist unnecessary `end`.
@@ -88,6 +89,74 @@ RSpec.describe RubyFriendlyError do
           subject
         end.to output(messages).to_stderr_from_any_process
           .and raise_error Parser::SyntaxError
+      end
+    end
+
+    context "when exist 'miss spell variable'" do
+      let(:code) do
+        <<~CODE
+          prayer_life = 100
+          player_lifee = 200
+
+          puts 'hoge' if player_life > 0
+        CODE
+      end
+      let(:messages) do
+        <<~MESSAGE
+          1: prayer_life = 100
+          2: player_lifee = 200
+          3:
+          4: puts 'hoge' if player_life > 0
+
+          1: prayer_life = 100
+          2: player_lifee = 200
+          3:
+
+          name error:
+            undefined local variable or method `player_life`
+            Did you mean? `player_lifee`, `prayer_life`
+        MESSAGE
+      end
+
+      it 'display message' do
+        expect do
+          subject
+        end.to output(messages).to_stderr_from_any_process
+          .and raise_error NameError
+      end
+    end
+
+    context "when exist 'miss spell arg'" do
+      let(:code) do
+        <<~CODE
+          def hoge prayer_life = 100 , player_lifee = 100
+            puts 'hoge' if player_life > 0
+          end
+
+          hoge
+        CODE
+      end
+      let(:messages) do
+        <<~MESSAGE
+          1: def hoge prayer_life = 100 , player_lifee = 100
+          2:   puts 'hoge' if player_life > 0
+          3: end
+
+          1: def hoge prayer_life = 100 , player_lifee = 100
+          2:   puts 'hoge' if player_life > 0
+          3: end
+
+          name error:
+            undefined local variable or method `player_life`
+            Did you mean? `player_lifee`, `prayer_life`
+        MESSAGE
+      end
+
+      it 'display message' do
+        expect do
+          subject
+        end.to output(messages).to_stderr_from_any_process
+          .and raise_error NameError
       end
     end
   end
