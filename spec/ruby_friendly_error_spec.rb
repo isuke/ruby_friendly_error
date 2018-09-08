@@ -41,6 +41,7 @@ RSpec.describe RubyFriendlyError do
       end
       let(:messages) do
         <<~MESSAGE
+          3:     puts 'foobar'
           4:   # missing `end`
           5: end
           6:
@@ -55,7 +56,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error Parser::SyntaxError
+          .and raise_error SyntaxError
       end
     end
 
@@ -88,7 +89,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error Parser::SyntaxError
+          .and raise_error SyntaxError
       end
     end
 

@@ -27,37 +27,43 @@ module RubyFriendlyError
     end
 
     def exec file_content, file_name = '(eval)'
-      ast = nil
-
-      suppress_error_display { ast = Parser::CurrentRuby.parse file_content }
-
-      # rubocop:disable Security/Eval
-      eval file_content, nil, file_name
-      # rubocop:enable Security/Eval
-    rescue Parser::SyntaxError => ex
-      case ex.message
-        when 'unexpected token $end'
-          render_missing_end_error file_content, ex
-        when 'unexpected token kEND'
-          render_unnecessary_end_error file_content, ex
-      end
-      raise ex
-    rescue NameError => ex
-      render_name_error_with_did_you_mean file_content, ex, ast
-      raise ex
+      eval file_content, nil, file_name # rubocop:disable Security/Eval
+    rescue Exception => ex # rubocop:disable Lint/RescueException
+      exception_file_name    = file_name == '(eval)' ? file_name : ex.backtrace.first.match(/(.+):[0-9]+:/)[1]
+      exception_file_content = file_name == '(eval)' ? file_content : File.read(exception_file_name)
+      exception_handling ex, exception_file_name, exception_file_content, file_name != '(eval)'
     end
 
   private
 
+    def exception_handling exception, file_name, file_content, displayed_backtrace
+      display_backtrace file_name, exception.backtrace if displayed_backtrace
+
+      case exception
+        when SyntaxError
+          case exception.message
+            when /unnecessary `end`/
+              render_unnecessary_end_error file_content, exception
+            when /unexpected end-of-input/
+              render_missing_end_error file_content, exception
+          end
+        when NameError
+          ast = suppress_error_display { Parser::CurrentRuby.parse file_content }
+          render_name_error_with_did_you_mean file_content, exception, ast
+      end
+
+      raise exception
+    end
+
     def render_missing_end_error file_content, ex
-      line = ex.diagnostic.location.line
+      line = ex.message.match(/:([0-9]+):/)[1].to_i
       display_error_line file_content, line
       STDERR.puts I18n.t('syntax_error.title').colorize(:light_red) + ':'
       STDERR.puts format_lines(I18n.t('syntax_error.missing_end')) { |l, _i| "  #{l}" }.colorize(:light_red)
     end
 
     def render_unnecessary_end_error file_content, ex
-      line = ex.diagnostic.location.line
+      line = ex.message.match(/:([0-9]+):/)[1].to_i
       display_error_line file_content, line
       STDERR.puts I18n.t('syntax_error.title').colorize(:light_red) + ':'
       STDERR.puts format_lines(I18n.t('syntax_error.unnecessary_end')) { |l, _i| "  #{l}" }.colorize(:light_red)
@@ -116,6 +122,30 @@ module RubyFriendlyError
         &.map
         &.with_index { |l, i| block_given? ? yield(l, i).rstrip : l.rstrip }
         &.join("\n")
+    end
+
+    def display_backtrace file_name, backtrace
+      fake_backtrace = backtrace
+        .dup
+        .delete_if { |b| b.match(/ruby_friendly_error/) }
+        .delete_if { |b| b.match(/`block in exec'/) }
+        .map do |b|
+          if b.match? Regexp.new("#{file_name}.*`exec'")
+            b.sub("`exec'", "`<main>'")
+          else
+            b
+          end
+        end
+
+      fake_backtrace_size   = fake_backtrace.size
+      fake_backtrace_digits = fake_backtrace_size.to_s.length
+
+      fake_backtrace.reverse_each.with_index do |b, i|
+        num        = fake_backtrace_size - i
+        num_digits = num.to_s.length
+        STDERR.puts "#{' ' * (fake_backtrace_digits - num_digits)}#{num}:#{b}".colorize(:light_red)
+      end
+      STDERR.puts
     end
   end
 end
