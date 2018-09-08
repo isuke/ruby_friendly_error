@@ -1,11 +1,18 @@
-= RubyFriendlyError
+:chapter-label:
+:icons: font
+:lang: en
+:sectanchors:
+:sectlinks:
+:sectnums:
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 1
+
+= RubyFriendlyError image:https://img.shields.io/badge/ruby-2.4.4-cc342d.svg["ruby 2.4.4", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-4-4-released/"] image:https://img.shields.io/badge/ruby-2.5.1-cc342d.svg["ruby 2.5.1", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-5-1-released/"]
 
 image:https://travis-ci.org/isuke/ruby_friendly_error.svg?branch=master["Build Status", link="https://travis-ci.org/isuke/ruby_friendly_error"]
 
-image:https://img.shields.io/badge/ruby-2.4.4-cc342d.svg["ruby 2.4.4", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-4-4-released/"]
-image:https://img.shields.io/badge/ruby-2.5.1-cc342d.svg["ruby 2.5.1", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-5-1-released/"]
-
-== Installation
+== Installation and Usage
 
 Add this line to your application's Gemfile:
 
@@ -13,9 +20,9 @@ Add this line to your application's Gemfile:
 gem 'ruby_friendly_error'
 ```
 
-== Usage
-
-TODO: Write usage instructions here
+```sh
+$ bundle exec ruby_friendly_error your.rb
+```
 
 == Development
 
@@ -33,4 +40,4 @@ The gem is available as open source under the terms of the https://opensource.or
 
 == Code of Conduct
 
-Everyone interacting in the RubyFriendlyError project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/isuke/ruby_friendly_error/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the RubyFriendlyError project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/isuke/ruby_friendly_error/blob/master/CODE_OF_CONDUCT.adoc).
