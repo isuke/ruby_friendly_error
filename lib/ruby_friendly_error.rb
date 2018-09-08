@@ -3,10 +3,11 @@
 require 'colorize'
 require 'i18n'
 require 'parser/current'
-require 'pry'
 
 require 'ruby_friendly_error/ast'
 require 'ruby_friendly_error/version'
+
+Bundler.require(:development)
 
 Parser::Builders::Default.emit_lambda   = true
 Parser::Builders::Default.emit_procarg0 = true
@@ -14,7 +15,7 @@ Parser::Builders::Default.emit_encoding = true
 Parser::Builders::Default.emit_index    = true
 
 module RubyFriendlyError
-  ROOT_PATH = Dir.pwd
+  ROOT_PATH = Pathname.new(__FILE__).dirname.parent.to_s
   WINDOW    = 2
 
   I18n.load_path = Dir[File.join(ROOT_PATH, 'locales', '*.yml')]
