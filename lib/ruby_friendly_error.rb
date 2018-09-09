@@ -144,7 +144,8 @@ module RubyFriendlyError
       fake_backtrace.reverse_each.with_index do |b, i|
         num        = fake_backtrace_size - i
         num_digits = num.to_s.length
-        STDERR.puts "#{' ' * (fake_backtrace_digits - num_digits)}#{num}:#{b}".colorize(:light_red)
+        color      = b.include?(file_name) ? :light_red : :light_yellow
+        STDERR.puts "#{' ' * (fake_backtrace_digits - num_digits)}#{num}:#{b}".colorize(color)
       end
       STDERR.puts
     end
