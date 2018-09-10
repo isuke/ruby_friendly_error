@@ -1,3 +1,0 @@
-Metrics/ModuleLength:
-  Exclude:
-    - lib/ruby_friendly_error.rb
