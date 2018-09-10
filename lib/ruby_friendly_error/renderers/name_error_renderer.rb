@@ -19,6 +19,8 @@ module RubyFriendlyError::Renderers
         node = ast.find_by_variable_name var_name
         display_error_line node.location.line
       end
+
+      display_error_line
     end
   end
 end

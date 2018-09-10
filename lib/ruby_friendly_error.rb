@@ -25,8 +25,10 @@ Parser::Builders::Default.emit_index    = true
 module RubyFriendlyError
   module Renderers; end
 
-  ROOT_PATH = Pathname.new(__FILE__).dirname.parent.to_s
-  WINDOW    = 2
+  ROOT_PATH     = Pathname.new(__FILE__).dirname.parent.to_s
+  WINDOW        = 2
+  DISPLAY_START = '<' * 80
+  DISPLAY_END   = '>' * 80
 
   I18n.load_path = Dir[File.join(ROOT_PATH, 'locales', '*.yml')]
   I18n.backend.load_translations

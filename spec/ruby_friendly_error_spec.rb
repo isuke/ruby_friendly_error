@@ -43,10 +43,12 @@ RSpec.describe RubyFriendlyError do
         <<~MESSAGE
           syntax error occurred: (eval):5
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           3:     puts 'foobar'
           4:   # missing `end`
           5: end
           6:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           syntax error:
             missing `end`.
@@ -78,10 +80,12 @@ RSpec.describe RubyFriendlyError do
         <<~MESSAGE
           syntax error occurred: (eval):7
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           5: end
           6:
           7: end # unnecessary `end`
           8:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           syntax error:
             exist unnecessary `end`.
@@ -110,14 +114,25 @@ RSpec.describe RubyFriendlyError do
         <<~MESSAGE
           name error occurred: (eval):4
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           1: prayer_life = 100
           2: player_lifee = 200
           3:
           4: puts 'hoge' if player_life > 0
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           1: prayer_life = 100
           2: player_lifee = 200
           3:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          2: player_lifee = 200
+          3:
+          4: puts 'hoge' if player_life > 0
+          5:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           name error:
             undefined local variable or method `player_life`
@@ -147,13 +162,24 @@ RSpec.describe RubyFriendlyError do
         <<~MESSAGE
           name error occurred: (eval):2
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           1: def hoge prayer_life = 100 , player_lifee = 100
           2:   puts 'hoge' if player_life > 0
           3: end
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           1: def hoge prayer_life = 100 , player_lifee = 100
           2:   puts 'hoge' if player_life > 0
           3: end
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          1: def hoge prayer_life = 100 , player_lifee = 100
+          2:   puts 'hoge' if player_life > 0
+          3: end
+          4:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           name error:
             undefined local variable or method `player_life`

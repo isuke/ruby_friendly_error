@@ -99,6 +99,7 @@ module RubyFriendlyError::Renderers
       window_start = [line - window, 1].max
       window_end   = [line + window, line_size].min
 
+      STDERR.puts RubyFriendlyError::DISPLAY_START.colorize(:light_yellow)
       if line > 1
         start_line = window_start
         end_line   = line - 1
@@ -110,6 +111,7 @@ module RubyFriendlyError::Renderers
         end_line   = window_end
         STDERR.puts format_lines(lines, line + 1, end_line) { |l, i| "#{start_line + i}: #{l}" }&.colorize(:light_yellow)
       end
+      STDERR.puts RubyFriendlyError::DISPLAY_END.colorize(:light_yellow)
       STDERR.puts
     end
 
