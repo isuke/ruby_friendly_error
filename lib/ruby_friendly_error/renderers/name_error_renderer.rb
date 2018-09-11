@@ -16,11 +16,11 @@ module RubyFriendlyError::Renderers
 
     def display_error_detail
       corrections.each do |var_name|
-        node = ast.find_by_variable_name var_name
-        display_error_line node.location.line
+        node_location = ast.find_by_variable_name(var_name).location
+        display_error_line_string node_location.line, strong_pos_range: ((node_location.column + 1)..node_location.last_column)
       end
 
-      display_error_line
+      display_error_line_string strong_pos_range: ((error_node.location.column + 1)..error_node.location.last_column)
     end
   end
 end

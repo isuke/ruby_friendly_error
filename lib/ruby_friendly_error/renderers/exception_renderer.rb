@@ -46,7 +46,7 @@ module RubyFriendlyError::Renderers
       raise NotImplementedError, "You must implement #{__method__}"
     end
 
-    def error_line
+    def error_line_number
       raise NotImplementedError, "You must implement #{__method__}"
     end
 
@@ -80,7 +80,7 @@ module RubyFriendlyError::Renderers
     end
 
     def display_main_message
-      STDERR.puts "#{exception_i18n_name.underline} #{I18n.t('main_message')}: #{file_path}:#{error_line}".colorize(:light_red)
+      STDERR.puts "#{exception_i18n_name.underline} #{I18n.t('main_message')}: #{file_path}:#{error_line_number}".colorize(:light_red)
       STDERR.puts
     end
 
@@ -90,38 +90,44 @@ module RubyFriendlyError::Renderers
 
     def display_message
       STDERR.puts "#{exception_i18n_name.underline}:".colorize(:light_red)
-      STDERR.puts format_lines(error_message) { |l, _i| "  #{l}" }.colorize(:light_red)
+      STDERR.puts format_line_strings(error_message) { |l, _i| "  #{l}" }.colorize(:light_red)
     end
 
-    def display_error_line line = error_line, window = RubyFriendlyError::WINDOW
-      lines        = file_content.split("\n", -1)
-      line_size    = lines.size
-      window_start = [line - window, 1].max
-      window_end   = [line + window, line_size].min
+    def display_error_line_string line_number = error_line_number, strong_pos_range: nil, window: RubyFriendlyError::WINDOW
+      line_strings   = file_content.split("\n", -1)
+      file_line_size = line_strings.size
+      window_start   = [line_number - window, 1].max
+      window_end     = [line_number + window, file_line_size].min
 
       STDERR.puts RubyFriendlyError::DISPLAY_START.colorize(:light_yellow)
-      if line > 1
-        start_line = window_start
-        end_line   = line - 1
-        STDERR.puts format_lines(lines, start_line, end_line) { |l, i| "#{start_line + i}: #{l}" }&.colorize(:light_yellow)
-      end
-      STDERR.puts "#{line}: #{lines[line - 1]}".rstrip.colorize(:light_red)
-      if line < line_size
-        start_line = line + 1
-        end_line   = window_end
-        STDERR.puts format_lines(lines, line + 1, end_line) { |l, i| "#{start_line + i}: #{l}" }&.colorize(:light_yellow)
-      end
+
+      display_error_line_string_window line_strings, window_start, line_number - 1 if line_number > 1
+
+      lint_string =
+        if strong_pos_range
+          RubyFriendlyError::Utils.replace_string_at(line_strings[line_number - 1], strong_pos_range, &:underline)
+        else
+          line_strings[line_number - 1]
+        end
+      STDERR.puts "#{line_number}: #{lint_string}".rstrip.colorize(:light_red)
+
+      display_error_line_string_window line_strings, line_number + 1, window_end if line_number < file_line_size
+
       STDERR.puts RubyFriendlyError::DISPLAY_END.colorize(:light_yellow)
       STDERR.puts
     end
 
-    def format_lines lines, start_line = 1, end_line = 0
-      lines =
-        case lines
-          when String then lines.split("\n", -1)
-          when Array  then lines
+    def display_error_line_string_window line_strings, start_line_number, end_line_number
+      STDERR.puts format_line_strings(line_strings, start_line_number, end_line_number) { |l, i| "#{start_line_number + i}: #{l}" }&.colorize(:light_yellow)
+    end
+
+    def format_line_strings line_strings, start_line = 1, end_line = 0
+      line_strings =
+        case line_strings
+          when String then line_strings.split("\n", -1)
+          when Array  then line_strings
         end
-      lines[(start_line - 1)..(end_line - 1)]
+      line_strings[(start_line - 1)..(end_line - 1)]
         &.map
         &.with_index { |l, i| block_given? ? yield(l, i).rstrip : l.rstrip }
         &.join("\n")

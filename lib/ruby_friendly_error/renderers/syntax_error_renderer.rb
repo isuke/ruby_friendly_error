@@ -12,7 +12,7 @@ module RubyFriendlyError::Renderers
       @file_content ||= eval? ? eval_file_content : File.read(file_path)
     end
 
-    def error_line
+    def error_line_number
       exception.message.match(/:([0-9]+):/)[1].to_i
     end
 

@@ -9,7 +9,7 @@ module RubyFriendlyError::Renderers
     end
 
     def display_error_detail
-      display_error_line
+      display_error_line_string
     end
   end
 end

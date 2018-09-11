@@ -47,4 +47,14 @@ class Parser::AST::Node
     end
     nil
   end
+
+  def find_by_line_number line_number
+    to_a.each do |node|
+      next unless node.is_a? Parser::AST::Node
+      return node if node.location.line == line_number
+      result = node.find_by_line_number line_number
+      return result if result
+    end
+    nil
+  end
 end
