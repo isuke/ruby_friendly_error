@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'missing_end'
+require_relative 'miss_spell1'
 
 player_life = 100
 

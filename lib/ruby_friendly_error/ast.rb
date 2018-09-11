@@ -35,6 +35,8 @@ class Parser::AST::Node
     KEYWORD_REST_ARG_TYPE,
   ].freeze
 
+  NOT_HAVE_LINE_TYPES = %i[args].freeze
+
   def find_by_variable_name variable_name
     to_a.each do |node|
       next unless node.is_a? Parser::AST::Node
@@ -51,6 +53,7 @@ class Parser::AST::Node
   def find_by_line_number line_number
     to_a.each do |node|
       next unless node.is_a? Parser::AST::Node
+      next if NOT_HAVE_LINE_TYPES.include? node.type
       return node if node.location.line == line_number
       result = node.find_by_line_number line_number
       return result if result
