@@ -44,7 +44,7 @@ module RubyFriendlyError
     rescue Exception => exception # rubocop:disable Lint/RescueException
       renderer_class(exception).new(exception, file_content).render
 
-      raise exception
+      exit false
     end
 
   private

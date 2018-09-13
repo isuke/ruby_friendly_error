@@ -60,7 +60,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error SyntaxError
+          .and raise_error SystemExit
       end
     end
 
@@ -97,7 +97,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error SyntaxError
+          .and raise_error SystemExit
       end
     end
 
@@ -144,7 +144,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error NameError
+          .and raise_error SystemExit
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe RubyFriendlyError do
         expect do
           subject
         end.to output(messages).to_stderr_from_any_process
-          .and raise_error NameError
+          .and raise_error SystemExit
       end
     end
   end
