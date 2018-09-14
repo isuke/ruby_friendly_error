@@ -42,8 +42,11 @@ module RubyFriendlyError
     def exec file_content, file_name = '(eval)'
       eval file_content, nil, file_name, 1 # rubocop:disable Security/Eval
     rescue Exception => exception # rubocop:disable Lint/RescueException
-      renderer_class(exception).new(exception, file_content).render
+      renderer_class = renderer_class(exception)
 
+      raise exception unless renderer_class
+
+      renderer_class.new(exception, file_content).render
       exit false
     end
 
