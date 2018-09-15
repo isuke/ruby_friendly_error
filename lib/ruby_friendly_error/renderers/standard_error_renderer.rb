@@ -23,9 +23,5 @@ module RubyFriendlyError::Renderers
     def error_line_number
       exception.backtrace.first.match(/:([0-9]+):/)[1].to_i
     end
-
-    def exception_i18n_name
-      I18n.t 'standard_error.name_error.title'
-    end
   end
 end

@@ -4,6 +4,10 @@ module RubyFriendlyError::Renderers
   class NameEndErrorRenderer < StandardErrorRenderer
   private
 
+    def exception_i18n_name
+      I18n.t 'standard_error.name_error.title'
+    end
+
     def corrections
       @corrections ||= exception.spell_checker.corrections
     end

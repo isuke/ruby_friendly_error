@@ -14,6 +14,7 @@ require 'ruby_friendly_error/renderers/missing_end_error_renderer'
 require 'ruby_friendly_error/renderers/unnecessary_end_error_renderer'
 require 'ruby_friendly_error/renderers/standard_error_renderer'
 require 'ruby_friendly_error/renderers/name_error_renderer'
+require 'ruby_friendly_error/renderers/argument_error_renderer'
 
 Bundler.require(:development)
 
@@ -63,6 +64,8 @@ module RubyFriendlyError
           end
         when NameError
           RubyFriendlyError::Renderers::NameEndErrorRenderer
+        when ArgumentError
+          RubyFriendlyError::Renderers::ArgumentErrorRenderer
       end
     end
   end

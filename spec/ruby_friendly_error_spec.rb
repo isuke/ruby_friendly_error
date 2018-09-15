@@ -135,8 +135,8 @@ RSpec.describe RubyFriendlyError do
           >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           name error:
-            undefined local variable or method `player_life`
-            Did you mean? `player_lifee`, `prayer_life`
+            undefined local variable or method `player_life`.
+            Did you mean? `player_lifee`, `prayer_life`.
         MESSAGE
       end
 
@@ -182,8 +182,51 @@ RSpec.describe RubyFriendlyError do
           >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
           name error:
-            undefined local variable or method `player_life`
-            Did you mean? `player_lifee`, `prayer_life`
+            undefined local variable or method `player_life`.
+            Did you mean? `player_lifee`, `prayer_life`.
+        MESSAGE
+      end
+
+      it 'display message' do
+        expect do
+          subject
+        end.to output(messages).to_stderr_from_any_process
+          .and raise_error SystemExit
+      end
+    end
+
+    context "when exist 'wrong number of arguments'" do
+      let(:code) do
+        <<~CODE
+          def hoge arg1, arg2 = 'foobar'
+            puts arg1
+            puts arg2
+          end
+
+          hoge 'piyo', 'fuga', 'what!?'
+        CODE
+      end
+      let(:messages) do
+        <<~MESSAGE
+          argument error occurred: (eval):1
+
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          1: def hoge arg1, arg2 = 'foobar'
+          2:   puts arg1
+          3:   puts arg2
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          4: end
+          5:
+          6: hoge 'piyo', 'fuga', 'what!?'
+          7:
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          argument error:
+            wrong number of arguments.
+            `hoge` expected 1..2.
+            but given 3.
         MESSAGE
       end
 
