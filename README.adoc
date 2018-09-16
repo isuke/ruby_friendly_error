@@ -6,7 +6,7 @@
 :sectnums:
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 1
+:toclevels: 2
 
 = RubyFriendlyError image:https://img.shields.io/badge/ruby-2.4.4-cc342d.svg["ruby 2.4.4", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-4-4-released/"] image:https://img.shields.io/badge/ruby-2.5.1-cc342d.svg["ruby 2.5.1", link="https://www.ruby-lang.org/en/news/2018/03/28/ruby-2-5-1-released/"]
 
@@ -23,6 +23,49 @@ gem 'ruby_friendly_error'
 ```sh
 $ bundle exec ruby_friendly_error your.rb
 ```
+
+== Samples
+
+=== miss spell
+
+[source,ruby]
+.sample.rb
+----
+# frozen_string_literal: true
+
+def hoge prayer_life = 100 , player_lifee = 200
+  puts 'hoge' if player_life > 0
+end
+
+hoge
+----
+
+```sh
+$ bundle exec ruby_friendly_error sample.rb
+```
+
+image:https://raw.githubusercontent.com/isuke/ruby_friendly_error/images/name_error_with_did_you_mean.png["name_error_with_did_you_mean", caption="output"]
+
+=== miss args num
+
+[source,ruby]
+.sample.rb
+----
+# frozen_string_literal: true
+
+def hoge arg1, arg2 = 'foobar'
+  puts arg1
+  puts arg2
+end
+
+hoge 'piyo', 'fuga', 'what!?'
+----
+
+```sh
+$ bundle exec ruby_friendly_error sample.rb
+```
+
+image:https://raw.githubusercontent.com/isuke/ruby_friendly_error/images/wrong_number_of_arguments_error.png["wrong_number_of_arguments_error", caption="output"]
 
 == Development
 
