@@ -4,7 +4,7 @@ require 'colorize'
 
 RSpec.describe RubyFriendlyError do
   it 'has a version number' do
-    expect(RubyFriendlyError::VERSION).to be '0.0.1'
+    expect(RubyFriendlyError::VERSION).to be '0.0.2'
   end
 
   describe '.exec' do

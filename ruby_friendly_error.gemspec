@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['isuke770@gmail.com']
 
   spec.summary       = 'make to ruby error messages friendly.'
-  spec.description   = 'make to ruby error messages friendly.'
+  spec.description   = 'make to ruby error messages friendly. Display multilingual message and error lines'
   spec.homepage      = 'https://github.com/isuke/ruby_friendly_error'
   spec.license       = 'MIT'
 
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'colorize', '~> 0.8'
   spec.add_dependency 'i18n'    , '~> 1.1'
-  spec.add_dependency 'parser'  , '~> 2.5.1'
-  spec.add_development_dependency 'bundler'      , '~> 1.16'
-  spec.add_development_dependency 'rake'         , '~> 10.0'
+  spec.add_dependency 'parser'  , '~> 2.5'
+  spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'rake'   , '~> 10.0'
 end

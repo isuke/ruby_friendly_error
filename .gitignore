@@ -6,5 +6,7 @@
 /tmp/
 /vendor/
 
+ruby_friendly_error-*.gem
+
 # rspec failure tracking
 .rspec_status

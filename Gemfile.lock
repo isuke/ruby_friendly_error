@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    ruby_friendly_error (0.0.1)
+    ruby_friendly_error (0.0.2)
       colorize (~> 0.8)
       i18n (~> 1.1)
-      parser (~> 2.5.1)
+      parser (~> 2.5)
 
 GEM
   remote: https://rubygems.org/
