@@ -3,4 +3,4 @@
 
 require 'ruby_friendly_error'
 
-RubyFriendlyError.load ARGV[0]
+RubyFriendlyError.load ARGV[0], ENV['RUBY_FRIENDLY_ERROR_LANG']&.to_sym

@@ -67,6 +67,27 @@ $ bundle exec ruby_friendly_error sample.rb
 
 image:https://raw.githubusercontent.com/isuke/ruby_friendly_error/images/wrong_number_of_arguments_error.png["wrong_number_of_arguments_error", caption="output"]
 
+== Options
+
+[cols="1,1,1", options="header"]
+|===
+| key
+| description
+| values
+
+| RUBY_FRIENDLY_ERROR_LANG
+| message language.
+| en, ja
+|===
+
+=== RUBY_FRIENDLY_ERROR_LANG
+
+```sh
+$ RUBY_FRIENDLY_ERROR_LANG=ja bundle exec ruby_friendly_error sample.rb
+```
+
+image:https://raw.githubusercontent.com/isuke/ruby_friendly_error/images/wrong_number_of_arguments_error_ja.png["wrong_number_of_arguments_error_ja", caption="output"]
+
 == Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

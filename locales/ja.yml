@@ -1,0 +1,22 @@
+ja:
+  main_message: "が発生しました。"
+  syntax_error:
+    title: "構文エラー"
+    missing_end: |
+      `end` が欠けています。
+      おそらくこの行より前に問題があります。
+    unnecessary_end: |
+      `end` が余分に存在しています。
+      不要な `end` を取り除いてください。
+  standard_error:
+    name_error:
+      title: "名前エラー"
+      with_did_you_mean: |
+        `%{var_name}` という名前の変数、もしくはメソッドが定義されていません。
+        もしかして? %{corrections}。
+    argument_error:
+      title: "引数エラー"
+      wrong_number_of_arguments: |
+        引数の数が誤っています。
+        `%{def_name}` は %{arg_range} 個の引数を期待しています。
+        しかし %{send_arg} 個の引数を渡しています。

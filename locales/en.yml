@@ -1,5 +1,5 @@
 en:
-  main_message: "occurred"
+  main_message: " occurred"
   syntax_error:
     title: "syntax error"
     missing_end: |

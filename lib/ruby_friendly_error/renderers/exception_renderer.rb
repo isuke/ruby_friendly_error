@@ -80,7 +80,7 @@ module RubyFriendlyError::Renderers
     end
 
     def display_main_message
-      STDERR.puts "#{exception_i18n_name.underline} #{I18n.t('main_message')}: #{file_path}:#{error_line_number}".colorize(:light_red)
+      STDERR.puts "#{exception_i18n_name.underline}#{I18n.t('main_message')}: #{file_path}:#{error_line_number}".colorize(:light_red)
       STDERR.puts
     end
 
