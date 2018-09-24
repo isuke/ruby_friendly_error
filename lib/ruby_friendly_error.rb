@@ -27,7 +27,7 @@ module RubyFriendlyError
   module Renderers; end
 
   ROOT_PATH     = Pathname.new(__FILE__).dirname.parent.to_s
-  WINDOW        = 2
+  WINDOW        = ENV['RUBY_FRIENDLY_ERROR_WINDOW']&.to_i || 2
   DISPLAY_START = '<' * 80
   DISPLAY_END   = '>' * 80
 

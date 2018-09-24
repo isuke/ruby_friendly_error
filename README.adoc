@@ -74,10 +74,17 @@ image:https://raw.githubusercontent.com/isuke/ruby_friendly_error/images/wrong_n
 | key
 | description
 | values
+| default
 
 | RUBY_FRIENDLY_ERROR_LANG
 | message language.
 | en, ja
+| en
+
+| RUBY_FRIENDLY_ERROR_WINDOW
+| display error lines window size
+| Integer
+| 2
 |===
 
 === RUBY_FRIENDLY_ERROR_LANG
