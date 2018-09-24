@@ -55,6 +55,7 @@ module RubyFriendlyError
   private
 
     def load_i18n lang
+      lang ||= :en
       I18n.backend.store_translations(lang, YAML.load_file(File.join(ROOT_PATH, 'locales', "#{lang}.yml")))
       I18n.locale = lang
     end
